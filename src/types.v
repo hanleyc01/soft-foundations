@@ -51,3 +51,27 @@ End Playground.
 Definition b : bool := true.
 
 Check Playground.b : rgb.
+
+Inductive bit : Type :=
+  | B_0
+  | B_1.
+
+Inductive nybble : Type :=
+  | bits (b_0 b_1 b_2 b_3 : bit).
+
+Check (bits B_1 B_0 B_1 B_0)
+  : nybble.
+
+Definition all_zero (nb : nybble) : bool :=
+  match nb with
+  | (bits B_0 B_0 B_0 B_0) => true
+  | _ => false
+  end.
+
+Compute (all_zero (bits B_1 B_0 B_0 B_0)).
+
+Compute (all_zero (bits B_0 B_0 B_0 B_0)).
+
+(* Note how we can access the elements within the nybble type
+ unwrapping the elements by pattern matching them
+ *)
