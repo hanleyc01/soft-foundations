@@ -1,0 +1,29 @@
+DIGEST 9386b14d648e3931f0cf4e5f0e0cb3ac
+Ftest
+ind 41:43 <> day
+constr 59:64 <> monday
+constr 70:76 <> tuesday
+constr 82:90 <> wednesday
+constr 96:103 <> thursday
+constr 109:114 <> friday
+constr 120:127 <> saturday
+constr 133:138 <> sunday
+def 178:189 <> next_weekday
+R194:196 test <> day ind
+binder 192:192 <> d:3
+R201:203 test <> day ind
+R216:216 test <> d:3 var
+R227:232 test <> monday constr
+R237:243 test <> tuesday constr
+R249:255 test <> tuesday constr
+R260:268 test <> wednesday constr
+R274:282 test <> wednesday constr
+R287:294 test <> thursday constr
+R300:307 test <> thursday constr
+R312:317 test <> friday constr
+R323:328 test <> friday constr
+R333:338 test <> monday constr
+R345:352 test <> saturday constr
+R357:362 test <> monday constr
+R369:374 test <> sunday constr
+R379:384 test <> monday constr
