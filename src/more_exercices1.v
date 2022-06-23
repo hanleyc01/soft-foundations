@@ -1,3 +1,4 @@
+Require Import Lia.
 (* Note that we can talk about binary numbers by introducing
    three new constructors; B0, B1, and the termination Z;
     3_10 == B1 (B1 Z)_2 == S (S (S 0)_1 *)
@@ -33,3 +34,15 @@ Fixpoint bin_to_nat (m : bin) : nat :=
 Example test_bin_incr6: 
   bin_to_nat (B0 (B0 (B0 (B1 Z)))) = S (S (S (S (S (S (S (S O))))))).
 Proof. simpl. reflexivity. Qed.
+
+(* Proof that the increment function commutes *)
+Theorem bin_incr_nat_succ_commu:
+  forall (b : bin),
+  bin_to_nat (incr b) = (bin_to_nat b) + 1.
+Proof.
+  induction b.
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+  - simpl. rewrite IHb. lia.
+Qed.
+
