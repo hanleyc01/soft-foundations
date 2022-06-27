@@ -125,3 +125,92 @@ Proof.
   - reflexivity.
   - simpl. rewrite IHl. reflexivity.
 Qed.
+
+Theorem rev_app_distr: forall X (l1 l2 : list X),
+    rev (l1 ++ l2) = rev l2 ++ rev l1.
+Proof.
+  intros X l1 l2. induction l1 as [| A l IHl].
+  - simpl. rewrite app_nil_r. reflexivity.
+  - simpl. rewrite IHl. rewrite app_assoc. reflexivity.
+Qed.
+
+Theorem rev_involutive : forall X : Type, forall l : list X,
+    rev (rev l) = l.
+Proof.
+  intros X l. induction l as [| A l1 IHl1].
+  - simpl. reflexivity.
+  - simpl. rewrite rev_app_distr. rewrite IHl1. reflexivity.
+Qed.
+
+(* We can also have polymorphic pairs, these are called products as they are the `product` of two types *)
+Inductive prod (X Y : Type) : Type :=
+| pair (x : X) (y : Y).
+
+Arguments pair {X} {Y}.
+
+Notation "( x , y )" := (pair x y).
+
+Notation "X * Y" := (prod X Y) : type_scope.
+
+(* Don't confuse (x,y) and X*Y, (x,y) has : X*Y  *)
+Definition fst {X Y : Type} (p : X * Y) : X :=
+  match p with
+  | (x, y) => x
+  end.
+
+Definition snd {X Y : Type} (p : X * Y) : Y :=
+  match p with
+  | (x, y) => y
+  end.
+
+(* We can also define a zip function *)
+Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y) : list (X * Y) :=
+  match lx, ly with
+  | [], _ => []
+  | _, [] => []
+  | x :: tx, y :: ty => (x,y) :: (combine tx ty)
+  end.
+
+(* We can define an unzip as well *)
+Fixpoint split {A B} (l : list (A * B)) : list A * list B :=
+  match l with
+  | [] => ([], [])
+  | (x, y) :: xs => let (xs2, ys2) := split xs in (x::xs2, y::ys2)
+  end.
+
+Module OptionPlayground.
+
+  Inductive option (X:Type) : Type :=
+  | Some (x : X)
+  | None.
+
+  Arguments Some {X}.
+  Arguments None {X}.
+
+End OptionPlayground.
+
+Fixpoint nth_error {X} (l : list X) (n : nat) : option X :=
+  match l with
+  | nil => None
+  | a :: l' => match n with
+             | 0 => Some a
+             | S n' => nth_error l' n'
+             end
+  end.
+
+Fixpoint hd_error {X} (l : list X) : option X :=
+  match l with
+  | nil => None
+  | x :: xs => Some x
+  end.
+
+Check @hd_error. (* : forall X : Type, list X -> option X *)
+
+Fixpoint filter {X} (test : X -> bool) (l : list X) : list X :=
+  match l with
+  | [] => []
+  | x :: xs =>
+      if test x then x :: (filter test xs)
+      else filter test xs
+  end.
+
